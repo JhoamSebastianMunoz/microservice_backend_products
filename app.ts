@@ -7,6 +7,9 @@ import get_product from './routes/productRoutes/get_product';
 import delete_product from './routes/productRoutes/delete_product';
 import update_product from './routes/productRoutes/update_product';
 
+import  uploadImage from './routes/imageRoutes/upload_image_product';
+import  getImage from './routes/imageRoutes/get_image';
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -19,6 +22,9 @@ app.use('/get-product', get_product);
 app.use('/delete-product', delete_product);
 app.use('/update-product', update_product);
 
+// Sentencia para subir una imagen 
+app.use('/upload-image', uploadImage);
+app.use('/get-image', getImage);
 
 
 // Configuración del puerto por donde correrá la aplicación
