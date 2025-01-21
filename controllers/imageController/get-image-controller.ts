@@ -1,27 +1,19 @@
 import { Request, Response } from "express";
-import GetProduct from "../../Dto/GetProductDto";
-import ProductService from '../../services/ProductService';
+import AzureBlobService from "../../services/AzureBlobStorageGetService";
 
+const getImageController = async (req: Request, res: Response) => {
+  const { imageName } = req.params;
+  if (!imageName) {
+    return res.status(400).json({ message: "El nombre de la imagen es requerido." });
+  }
 
+  try {
+    const sasUrl = await AzureBlobService.generateSasUrl(imageName);
+    res.status(200).json({ message: "Imagen obtenida correctamente", url: sasUrl });
+  } catch (error) {
+    console.error("Error al obtener la imagen:", error);
+    res.status(500).json({ message: "No se pudo obtener la imagen." });
+  }
+};
 
-
-let get_product = async (req: Request, res: Response) => {  
-    try {
-        const { id_producto } = req.params;
-        const result = await ProductService.getProduct(new GetProduct (id_producto));
-        if(!result) {
-            return res.status(404).json({message: 'Producto no encontrado'})
-        }else{
-            return res.status(201).json(result);
-        }
-        
-        } catch (error: any) {    
-        if (error && error.code == "ER_DUP_ENTRY") {
-            return res.status(500).json({ errorInfo: error.sqlMessage });
-        } else {
-            return res.status(500).json({ error: "Internal Server Error", details: error.message });
-        }
-        }
-    };
-
-    export default get_product;
+export default getImageController;
