@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import AzureBlobService from "../../services/AzureBlobStorageGetService";
+import AzureBlobService from "../../repositories/AzureImageRepository";
 
 const getImageController = async (req: Request, res: Response) => {
   const { imageName } = req.params;

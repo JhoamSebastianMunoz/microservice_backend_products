@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import UploadImage from "../../services/AzureBlobStorageService";
+import UploadImage from "../../repositories/AzureImageRepository";
 
 const uploadImageProductController = async (req: Request, res: Response) => {
   try {
