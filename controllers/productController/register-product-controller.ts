@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Product from '../../Dto/ProductDto';
+import Product from '../../Dto/productDto/ProductDto';
 import ProductService from '../../services/ProductService';
 
 let register_product = async (req: Request, res: Response) => {  

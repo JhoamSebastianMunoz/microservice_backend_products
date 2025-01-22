@@ -1,8 +1,8 @@
 import ProductRepository from '../repositories/ProductRepository';
-import Product from '../Dto/ProductDto';
-import GetProduct from '../Dto/GetProductDto';
-import DeleteProduct from '../Dto/DeleteProductDto';
-import UpdateProduct from '../Dto/UpdateProductDto';
+import Product from '../Dto/productDto/ProductDto';
+import GetProduct from '../Dto/productDto/GetProductDto';
+import DeleteProduct from '../Dto/productDto/DeleteProductDto';
+import UpdateProduct from '../Dto/productDto/UpdateProductDto';
 
 class ProductService {
     

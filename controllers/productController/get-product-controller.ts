@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import GetProduct from "../../Dto/GetProductDto";
+import GetProduct from "../../Dto/productDto/GetProductDto";
 import ProductService from '../../services/ProductService';
 
 

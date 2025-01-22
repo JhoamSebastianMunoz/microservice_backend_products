@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import UpdateProduct from '../../Dto/UpdateProductDto';
+import UpdateProduct from '../../Dto/productDto/UpdateProductDto';
 import ProductService from '../../services/ProductService';
 
 let update_product = async(req:Request, res:Response)=>{
