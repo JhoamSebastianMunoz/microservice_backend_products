@@ -17,7 +17,7 @@ let update_product = async(req:Request, res:Response)=>{
                 return res.status(404).json({ error: "Producto no encontrado." });
             }
             else{ return res.status(200).json(
-                {status:'ok, Producto actualizado con éxito'}
+                {status:'Ok, Producto actualizado con éxito.'}
             ); 
             }
         }catch(error:any){

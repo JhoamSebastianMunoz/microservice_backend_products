@@ -1,5 +1,7 @@
 import express from "express";
 import bodyParser from 'body-parser';
+import swaggerUi from "swagger-ui-express";
+import YAML from "yamljs"; // 
 
 import register_product from './routes/productRoutes/register_product';
 import get_products from './routes/productRoutes/get_products';
@@ -15,6 +17,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express().use(bodyParser.json());
+// Cargar archivo YAML de Swagger
+const swaggerDocument = YAML.load("./swagger.yaml");
+
+// Montar la documentación Swagger en la ruta `/api-docs`
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Sentencia CRUD para productos
 app.use('/register-product', register_product);
@@ -30,7 +37,7 @@ app.use('/delete-image', deleteImage);
 
 
 // Configuración del puerto por donde correrá la aplicación
-const PORT = process.env.PORT || 10101;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
   console.log("Servidor ejecutándose en el puerto: ", PORT);
