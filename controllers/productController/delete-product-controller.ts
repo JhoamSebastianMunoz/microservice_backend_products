@@ -13,7 +13,7 @@ let delete_product = async (req: Request, res: Response) => {
             return res.status(404).json({ error: "Producto no encontrado." });
         }
         else {
-            return res.status(200).json({ message: "Producto eliminado con éxito" });
+            return res.status(200).json({ message: "Producto eliminado con éxito." });
         }
     } catch (error: any) {
         if (error.code === "ER_ROW_IS_REFERENCED") {

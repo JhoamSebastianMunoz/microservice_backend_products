@@ -1,0 +1,330 @@
+openapi: 3.0.0
+info:
+  title: Microservice Backend Products API TATSoft
+  version: "1.0.0"
+  description: API para la gestión de productos e imágenes
+servers:
+  - url: http://localhost:10102
+    description: Servidor local de desarrollo
+
+paths:
+  /register-product:
+    post:
+      summary: Registra un nuevo producto
+      description: Endpoint para registrar productos en el sistema
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre_producto:
+                  type: string
+                  description: Nombre del producto
+                precio:
+                  type: number
+                  description: Precio del producto
+                descripcion:
+                  type: string
+                  description: Descripción del producto
+                cantidad_ingreso:
+                  type: integer
+                  description: Cantidad de ingreso del producto
+              required:
+                - nombre_producto
+                - precio
+      responses:
+        201:
+          description: Producto registrado con éxito
+        500:
+          description: Internal Server Error
+
+  /get-products:
+    get:
+      summary: Obtiene todos los productos registrados en inventario
+      description: Endpoint para listar todos los productos
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id_producto:
+                      type: integer
+                      description: ID del producto
+                    nombre_producto:
+                      type: string
+                      description: Nombre del producto
+                    precio:
+                      type: number
+                      description: Precio del producto
+                    descripcion:
+                      type: string
+                      description: Descripción del producto
+                    cantidad_ingreso:
+                      type: integer
+                      description: Cantidad de ingreso del producto
+        500:
+          description: Error interno del servidor
+
+  /get-product/{id_producto}:
+    get:
+      summary: Obtiene un producto específico segun el id_producto que proporcionemos
+      description: Endpoint para obtener los detalles de un producto mediante su ID
+      parameters:
+        - in: path
+          name: id_producto
+          required: true
+          schema:
+            type: integer
+          description: El id del producto debe contener mínimo 1 caracter
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id_producto:
+                    type: integer
+                    description: ID del producto
+                  nombre_producto:
+                    type: string
+                    description: Nombre del producto
+                  precio:
+                    type: number
+                    description: Precio del producto
+                  descripcion:
+                    type: string
+                    description: Descripción del producto
+                  cantidad_ingreso:
+                    type: integer
+                    description: Cantidad de ingreso del producto
+        404:
+          description: Producto no encontrado
+
+  /delete-product/{id_producto}:
+    delete:
+      summary: Elimina un producto del inventario
+      description: Endpoint para eliminar un producto por su id_producto
+      parameters:
+        - in: path
+          name: id_producto
+          required: true
+          schema:
+            type: integer
+          description: Proporciona el ID del producto a eliminar
+      responses:
+        200:
+          description: Producto eliminado con éxito
+        404:
+          description: Producto no encontrado.
+        409:
+          description: No se puede eliminar el producto debido a referencias existentes en otros registros.
+        500:
+          description: Error interno del servidor.
+
+  /update-product/{id}:
+    put:
+      summary: Actualiza un producto existente
+      description: Endpoint para actualizar los datos de un producto específico. Se requiere el ID del producto en la URL y los campos a actualizar en el cuerpo de la solicitud.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID del producto a actualizar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre_producto:
+                  type: string
+                  description: Nombre del producto
+                precio:
+                  type: number
+                  description: Precio del producto
+                descripcion:
+                  type: string
+                  description: Descripción del producto
+                cantidad_ingreso:
+                  type: integer
+                  description: Cantidad de ingreso del producto
+              required:
+                - id_producto
+                - nombre_producto
+                - precio
+      responses:
+        200:
+          description: Ok, Producto actualizado con éxito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Ok, Producto actualizado con éxito.
+                  updatedProduct:
+                    type: object
+                    properties:
+                      id_producto:
+                        type: integer
+                      nombre_producto:
+                        type: string
+                      precio:
+                        type: number
+                      descripcion:
+                        type: string
+                      cantidad_ingreso:
+                        type: integer
+        404:
+          description: Producto no encontrado.
+        500:
+          description: Internal Server Error.
+
+  /upload-image:
+    post:
+      summary: Sube una imagen al servicio de Azure BLOBs Storage
+      description: Endpoint para subir imágenes asociadas a productos
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: Archivo de imagen a subir
+              required:
+                - image
+      responses:
+        201:
+          description: Imagen subida correctamente.
+        400:
+          description: No se proporcionó ninguna imagen.
+        500:
+          description: Error al subir la imagen.
+
+  /get-image/{imageName}:
+      get:
+        summary: Obtener una imagen por su nombre
+        description: Obtiene la URL temporal de una imagen almacenada en Azure Blob Storage usando un token SAS.
+        parameters:
+          - name: imageName
+            in: path
+            required: true
+            description: El nombre de la imagen a obtener.
+            schema:
+              type: string
+        responses:
+          200:
+            description: Imagen obtenida correctamente.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: Imagen obtenida correctamente.
+                    url:
+                      type: string
+                      example: https://<nombre-cuenta>.blob.core.windows.net/<nombre-contenedor>/<nombre-imagen>?<sas-token>
+          400:
+            description: Petición incorrecta (nombre de la imagen no proporcionado).
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: El nombre de la imagen es requerido.
+          404:
+            description: La imagen no existe.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: La imagen con el nombre <imageName> no existe.
+          500:
+            description: Error interno del servidor.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: No se pudo obtener la imagen.
+
+  /delete-image:
+      delete:
+        summary: Eliminar una imagen
+        description: Elimina una imagen del almacenamiento en Azure Blob Storage, en base  al nombre de la imagen que proporcionemos.
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  fileName:
+                    type: string
+                    description: Nombre del archivo que se desea eliminar.
+                    example: ejemplo.jpg
+        responses:
+          '200':
+            description: Imagen eliminada exitosamente.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: La imagen 'ejemplo.jpg' se eliminó correctamente.
+          '400':
+            description: Parámetro faltante o inválido.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: El parámetro 'fileName' es obligatorio.
+          '404':
+            description: Imagen no encontrada.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: La imagen con el nombre proporcionado no existe.
+          '500':
+            description: Error interno del servidor.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                      example: Error al eliminar la imagen.

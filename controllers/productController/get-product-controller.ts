@@ -12,7 +12,7 @@ let get_product = async (req: Request, res: Response) => {
         if(!result) {
             return res.status(404).json({message: 'Producto no encontrado'})
         }else{
-            return res.status(201).json(result);
+            return res.status(200).json(result);
         }
         
         } catch (error: any) {    

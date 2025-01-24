@@ -9,7 +9,7 @@ const getImageController = async (req: Request, res: Response) => {
 
   try {
     const sasUrl = await AzureBlobService.generateSasUrl(imageName);
-    res.status(200).json({ message: "Imagen obtenida correctamente", url: sasUrl });
+    res.status(200).json({ message: "Imagen obtenida correctamente.", url: sasUrl });
   } catch (error) {
     console.error("Error al obtener la imagen:", error);
     res.status(500).json({ message: "No se pudo obtener la imagen." });
