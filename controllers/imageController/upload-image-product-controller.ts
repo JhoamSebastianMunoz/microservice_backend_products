@@ -1,14 +1,22 @@
 import { Request, Response } from "express";
-import UploadImage from "../../repositories/AzureImageRepository";
+import ImageService from '../../services/ImageService';
+import RegisterImage from '../../Dto/imageDto/RegisterImageDto';
+
 
 const uploadImageProductController = async (req: Request, res: Response) => {
   try {
-    const file = req.file;
-
-    // Si el archivo no existe, el middleware ya debería haber respondido con un error.
-    const url = await UploadImage.uploadToImage(file!.originalname, file!.buffer);
-
-    res.status(201).json({ message: "Imagen subida correctamente.", url });
+    const content = req.file?.buffer;
+    const fileName = req.file?.originalname;
+    if (!fileName || !content) {
+      return res.status(400).json({ message: "Error: Archivo no encontrado o inválido." });
+    }
+    const url = await ImageService.registerImage(new RegisterImage(fileName, content));
+    if(!url){
+      return res.status(400).json({message: 'Error al subir la imagen'});
+    }
+    else{
+      res.status(201).json({ message: "Imagen subida correctamente.", url });
+    }
   } catch (error) {
     res.status(500).json({ message: "Error al subir la imagen."});
   }

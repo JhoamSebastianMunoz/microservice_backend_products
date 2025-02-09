@@ -9,8 +9,9 @@ let register_product = async (req: Request, res: Response) => {
       precio,
       descripcion,
       cantidad_ingreso,
+      id_imagen
     } = req.body;
-    const result = await ProductService.register_product(new Product(nombre_producto, precio, descripcion, cantidad_ingreso))
+    const result = await ProductService.register_product(new Product(nombre_producto, precio, descripcion, cantidad_ingreso, id_imagen))
     
     return res.status(201).json(
       { status: 'Producto registrado con éxito'}
