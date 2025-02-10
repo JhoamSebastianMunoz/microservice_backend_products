@@ -8,6 +8,7 @@ let validatorParams = [
     .isNumeric().withMessage('Ingrese el precio en números, acepta decimal').bail(),
     check('descripcion').isLength({max:255}).withMessage('La descripción es opcional con hasta 255 caracteres permitidos').optional().bail(),
     check('cantidad_ingreso').isNumeric().withMessage('Ingrese el número de productos que quiere ingresar al invetario, en números, No letras').optional().bail(),
+    check('id_imagen').isString().withMessage('El campo id_imagen es obligatorio').bail(),
 ];
         
     

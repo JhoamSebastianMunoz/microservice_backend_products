@@ -2,16 +2,19 @@ import multer from "multer";
 import { Request, Response, NextFunction } from "express";
 
 const upload = multer({
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
+  limits: { fileSize: 6 * 1024 * 1024 }, // 6 MB
 });
 
 const allowedMimeTypes = ["image/jpeg", "image/png", "image/gif", "image/jfif", "image/webp"];
 
 function uploadMiddleware(req: Request, res: Response, next: NextFunction) {
     upload.single("image")(req, res, (err) => {
-    if (err) {
-        return res.status(500).json({ message: "Error al procesar la imagen", error: err.message });
-    }
+        if (err) {
+            if (err.code === "LIMIT_FILE_SIZE") {
+                return res.status(413).json({ message: "El archivo es demasiado grande. Máximo 6MB." });
+            }
+            return res.status(500).json({ message: "Error al procesar la imagen", error: err.message });
+        }
 
     const file = req.file;
 
@@ -26,6 +29,6 @@ function uploadMiddleware(req: Request, res: Response, next: NextFunction) {
 
     next();
     });
-}
+};
 
 export default uploadMiddleware;
