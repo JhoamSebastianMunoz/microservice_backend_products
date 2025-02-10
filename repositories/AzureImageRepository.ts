@@ -18,7 +18,7 @@ if (!containerName) {
     throw new Error("El nombre del contenedor (AZURE_STORAGE_CONTAINER_NAME) no está configurado en el archivo .env");
 };
 
-class AzureBlobService {
+class AzureBlobRepository {
     static async uploadToImage(registerImage: RegisterImage): Promise<string> {
         try {
             if (!registerImage.fileName || !registerImage.content) {
@@ -92,4 +92,4 @@ class AzureBlobService {
     }
 };
 
-export default AzureBlobService;
+export default AzureBlobRepository ;

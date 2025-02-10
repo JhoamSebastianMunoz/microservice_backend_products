@@ -1,17 +1,17 @@
-import AzureImageRepository from '../repositories/AzureImageRepository';
+import AzureBlobRepository from '../repositories/AzureImageRepository';
 import RegisterImage from '../Dto/imageDto/RegisterImageDto';
 import DeleteImage from '../Dto/imageDto/DeleteImageDto';
 import GetImage from '../Dto/imageDto/GetImageDto';
 
 class ImageService {
     static async registerImage(registerImage: RegisterImage){
-        return await AzureImageRepository.uploadToImage(registerImage)
+        return await AzureBlobRepository.uploadToImage(registerImage)
     }
     static async deleteImage(deleteImage: DeleteImage){
-        return await AzureImageRepository.deleteBlob(deleteImage)
+        return await AzureBlobRepository.deleteBlob(deleteImage)
     }
     static async getImage(getImage: GetImage){
-        return await AzureImageRepository.generateSasUrl(getImage)
+        return await AzureBlobRepository.generateSasUrl(getImage)
     }
 };
 export default ImageService;
