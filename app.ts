@@ -14,6 +14,9 @@ import  uploadImage from './routes/imageRoutes/upload_image_product';
 import  getImage from './routes/imageRoutes/get_image';
 import deleteImage from './routes/imageRoutes/delete_image';
 
+import get_dataProduct from './routes/microservicePresaleRoutes/get_DataProduct';
+import update_quantity from './routes/microservicePresaleRoutes/update_Quantity'
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -37,6 +40,11 @@ app.use('/update-product', update_product);
 app.use('/upload-image', uploadImage);
 app.use('/get-image', getImage);
 app.use('/delete-image', deleteImage);
+
+// rutas para peticiones del microservicio preventa
+app.use('/api', get_dataProduct);
+// Para actualizar la cantidad de productos
+app.use('/api', update_quantity);
 
 
 // Configuración del puerto por donde correrá la aplicación
