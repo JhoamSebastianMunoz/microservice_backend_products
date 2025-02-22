@@ -45,9 +45,9 @@ app.use('/get-image', getImage);
 app.use('/delete-image', deleteImage);
 
 // rutas para peticiones del microservicio preventa
-app.use('https://backendpresalessalereturns-g2cghudwf2emhnf4.eastus-01.azurewebsites.net/', get_dataProduct);
+app.use('/api', get_dataProduct);
 // Para actualizar la cantidad de productos
-app.use('https://backendpresalessalereturns-g2cghudwf2emhnf4.eastus-01.azurewebsites.net/', update_quantity);
+app.use('/api', update_quantity);
 
 
 // Configuración del puerto por donde correrá la aplicación
