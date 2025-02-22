@@ -45,7 +45,7 @@ app.use('/get-image', getImage);
 app.use('/delete-image', deleteImage);
 
 // rutas para peticiones del microservicio preventa
-app.use('https://backendproducts-eefufaaeaahzauee.eastus-01.azurewebsites.net/', get_dataProduct);
+app.use('https://backendpresalessalereturns-g2cghudwf2emhnf4.eastus-01.azurewebsites.net/', get_dataProduct);
 // Para actualizar la cantidad de productos
 app.use('https://backendpresalessalereturns-g2cghudwf2emhnf4.eastus-01.azurewebsites.net/', update_quantity);
 
