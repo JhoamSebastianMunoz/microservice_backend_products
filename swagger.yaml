@@ -1,59 +1,73 @@
 openapi: 3.0.0
 info:
-  title: Microservice Backend Products API TATSoft
-  version: "1.0.0"
-  description: API para la gestión de productos e imágenes
+  title: API de Productos TATSost
+  description: API para la gestión de productos y sus imágenes
+  version: 1.0.0
+
 servers:
   - url: http://localhost:10102
-    description: Servidor local de desarrollo
+    description: Servidor local
   - url: https://backendproducts-eefufaaeaahzauee.eastus-01.azurewebsites.net
-    description: Servidor desplegado en Azure
+    description: Servidor de producción
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Product:
+      type: object
+      properties:
+        nombre_producto:
+          type: string
+          minLength: 2
+          maxLength: 120
+          description: Nombre del producto
+        precio:
+          type: number
+          description: Precio del producto
+        descripcion:
+          type: string
+          maxLength: 255
+          description: Descripción del producto
+        cantidad_ingreso:
+          type: integer
+          description: Cantidad de productos en inventario
+        id_imagen:
+          type: string
+          description: ID de la imagen del producto
+    
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Mensaje de error
+        details:
+          type: string
+          description: Detalles adicionales del error
 
 paths:
   /register-product:
     post:
+      security:
+        - bearerAuth: []
       tags:
         - Productos
-      summary: Registro de un nuevo producto
-      description: Permite registrar un nuevo producto en el sistema.
+      summary: Registrar un nuevo producto
+      description: Crea un nuevo producto en el sistema
       requestBody:
-        description: Objeto JSON con los datos del producto a registrar.
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                nombre_producto:
-                  type: string
-                  description: Nombre del producto (entre 2 y 120 caracteres).
-                  minLength: 2
-                  maxLength: 120
-                  example: "Camiseta Deportiva"
-                precio:
-                  type: number
-                  description: Precio del producto (valor numérico, acepta decimal).
-                  example: 29.99
-                descripcion:
-                  type: string
-                  description: Descripción del producto (opcional, hasta 255 caracteres).
-                  maxLength: 255
-                  example: "Camiseta de algodón para actividades deportivas."
-                cantidad_ingreso:
-                  type: number
-                  description: Número de productos a ingresar al inventario (opcional).
-                  example: 100
-                id_imagen:
-                  type: string
-                  description: Identificador de la imagen del producto.
-                  example: "img_12345"
-              required:
-                - nombre_producto
-                - precio
-                - id_imagen
+              $ref: '#/components/schemas/Product'
       responses:
         '201':
-          description: Producto registrado con éxito.
+          description: Producto registrado exitosamente
           content:
             application/json:
               schema:
@@ -63,180 +77,93 @@ paths:
                     type: string
                     example: "Producto registrado con éxito"
         '422':
-          description: Error de validación de parámetros.
+          description: Error de validación
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        msg:
-                          type: string
-                          example: "Ingrese un nombre de producto entre 2 a 120 caracteres"
-                        param:
-                          type: string
-                          example: "nombre_producto"
-                        location:
-                          type: string
-                          example: "body"
+                $ref: '#/components/schemas/Error'
         '500':
-          description: Error interno del servidor.
+          description: Error interno del servidor
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "Internal Server Error"
-                  details:
-                    type: string
-                    example: "Descripción detallada del error"
+                $ref: '#/components/schemas/Error'
 
   /get-products:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - Productos
-      summary: Obtiene la lista de productos
-      description: Devuelve un arreglo con todos los productos disponibles en el sistema.
+      summary: Obtener todos los productos
+      description: Retorna la lista de todos los productos
       responses:
         '200':
-          description: Lista de productos obtenida exitosamente.
+          description: Lista de productos obtenida exitosamente
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Product'
-              examples:
-                example-1:
-                  summary: Ejemplo de respuesta exitosa
-                  value:
-                    - id_producto: 1
-                      nombre_producto: "Camiseta Deportiva"
-                      precio: 29.99
-                      descripcion: "Camiseta de algodón para actividades deportivas."
-                      cantidad_ingreso: 100
-                      id_imagen: "img_12345"
-                    - id_producto: 2
-                      nombre_producto: "Pantalón Deportivo"
-                      precio: 49.99
-                      descripcion: "Pantalón de tela transpirable."
-                      cantidad_ingreso: 50
-                      id_imagen: "img_67890"
         '500':
-          description: Error interno del servidor.
+          description: Error interno del servidor
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "Internal Server Error"
-                  details:
-                    type: string
-                    example: "Descripción detallada del error"
+                $ref: '#/components/schemas/Error'
 
   /get-product/{id_producto}:
     get:
+      security:
+        - bearerAuth: []
       tags:
         - Productos
-      summary: Obtener un producto por su ID
-      description: Retorna los detalles de un producto específico, identificado por su id_producto.
+      summary: Obtener un producto específico
+      description: Retorna un producto por su ID
       parameters:
         - name: id_producto
           in: path
-          description: El identificador del producto. Debe ser un número y tener al menos 1 dígito.
           required: true
+          description: ID del producto a buscar
           schema:
             type: integer
             minimum: 1
-            example: 1
       responses:
         '200':
-          description: Producto encontrado exitosamente.
+          description: Producto encontrado exitosamente
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
-              examples:
-                productoEjemplo:
-                  summary: Producto encontrado
-                  value:
-                    id_producto: 1
-                    nombre_producto: "Camiseta Deportiva"
-                    precio: 29.99
-                    descripcion: "Camiseta de algodón para actividades deportivas."
-                    cantidad_ingreso: 100
-                    id_imagen: "img_12345"
         '404':
-          description: Producto no encontrado.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Producto no encontrado"
-        '422':
-          description: Error de validación de parámetros.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        msg:
-                          type: string
-                          example: "El id del producto debe contener mínimo 1 caracter"
-                        param:
-                          type: string
-                          example: "id_producto"
-                        location:
-                          type: string
-                          example: "params"
+          description: Producto no encontrado
         '500':
-          description: Error interno del servidor.
+          description: Error interno del servidor
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "Internal Server Error"
-                  details:
-                    type: string
-                    example: "Descripción detallada del error"
+                $ref: '#/components/schemas/Error'
 
   /delete-product/{id_producto}:
     delete:
+      security:
+        - bearerAuth: []
       tags:
         - Productos
       summary: Eliminar un producto
-      description: Elimina un producto especificado por su identificador.
+      description: Elimina un producto por su ID
       parameters:
         - name: id_producto
           in: path
-          description: Identificador del producto a eliminar. Debe ser un número y contener al menos 1 dígito.
           required: true
+          description: ID del producto a eliminar
           schema:
             type: integer
             minimum: 1
-            example: 1
       responses:
         '200':
-          description: Producto eliminado con éxito.
+          description: Producto eliminado exitosamente
           content:
             application/json:
               schema:
@@ -246,112 +173,35 @@ paths:
                     type: string
                     example: "Producto eliminado con éxito."
         '404':
-          description: Producto no encontrado.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "Producto no encontrado."
-        '409':
-          description: Conflicto por referencias existentes.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "No se puede eliminar el producto debido a referencias existentes en otros registros."
-        '422':
-          description: Error de validación de parámetros.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        msg:
-                          type: string
-                          example: "El id del producto debe contener mínimo 1 caracter"
-                        param:
-                          type: string
-                          example: "id_producto"
-                        location:
-                          type: string
-                          example: "params"
+          description: Producto no encontrado
         '500':
-          description: Error interno del servidor.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "Error interno del servidor"
-                  details:
-                    type: string
-                    example: "Detalles del error"
+          description: Error interno del servidor
 
   /update-product/{id_producto}:
     put:
+      security:
+        - bearerAuth: []
       tags:
         - Productos
       summary: Actualizar un producto
-      description: Actualiza la información de un producto existente identificado por su ID.
+      description: Actualiza la información de un producto existente
       parameters:
         - name: id_producto
           in: path
-          description: Identificador del producto a actualizar. Debe ser un número y contener mínimo 1 dígito.
           required: true
+          description: ID del producto a actualizar
           schema:
             type: integer
             minimum: 1
-            example: 1
       requestBody:
-        description: Objeto JSON que contiene los datos actualizados del producto.
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                nombre_producto:
-                  type: string
-                  description: Nombre del producto (entre 2 y 120 caracteres).
-                  minLength: 2
-                  maxLength: 120
-                  example: "Camiseta Deportiva"
-                precio:
-                  type: number
-                  description: Precio del producto (valor numérico, acepta decimales).
-                  example: 29.99
-                descripcion:
-                  type: string
-                  description: Descripción del producto (opcional, hasta 255 caracteres).
-                  maxLength: 255
-                  example: "Camiseta de algodón para actividades deportivas."
-                cantidad_ingreso:
-                  type: number
-                  description: Cantidad de producto a ingresar al inventario (opcional).
-                  example: 100
-                id_imagen:
-                  type: string
-                  description: Identificador de la imagen asociada al producto (opcional).
-                  example: "img_12345"
-              required:
-                - nombre_producto
-                - precio
+              $ref: '#/components/schemas/Product'
       responses:
         '200':
-          description: Producto actualizado con éxito.
+          description: Producto actualizado exitosamente
           content:
             application/json:
               schema:
@@ -361,63 +211,16 @@ paths:
                     type: string
                     example: "Ok, Producto actualizado con éxito."
         '404':
-          description: Producto no encontrado.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "Producto no encontrado."
-        '422':
-          description: Error de validación de parámetros.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        msg:
-                          type: string
-                          example: "El id del producto debe contener mínimo 1 caracter"
-                        param:
-                          type: string
-                          example: "id_producto"
-                        location:
-                          type: string
-                          example: "params"
+          description: Producto no encontrado
         '500':
-          description: Error interno del servidor.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "Internal Server Error"
-                  details:
-                    type: string
-                    example: "Detalles del error"
-              examples:
-                duplicateEntry:
-                  summary: Error por duplicidad de entrada
-                  value:
-                    errorInfo: "Mensaje de error SQL relacionado con duplicidad"
+          description: Error interno del servidor
 
   /upload-image:
     post:
       tags:
         - Imágenes
       summary: Subir imagen de producto
-      description: Permite subir una imagen para asociarla a un producto. El archivo debe enviarse en el campo `image` y debe cumplir con los siguientes requisitos:
-        - Formatos permitidos: JPEG, PNG, GIF, JFIF, WEBP.
-        - Tamaño máximo: 6 MB.
+      description: Sube una nueva imagen para un producto
       requestBody:
         required: true
         content:
@@ -428,12 +231,10 @@ paths:
                 image:
                   type: string
                   format: binary
-                  description: Archivo de imagen a subir.
-              required:
-                - image
+                  description: Archivo de imagen (max 6MB)
       responses:
         '201':
-          description: Imagen subida correctamente.
+          description: Imagen subida exitosamente
           content:
             application/json:
               schema:
@@ -441,61 +242,29 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: "Imagen subida correctamente."
                   url:
                     type: string
-                    description: URL de la imagen subida.
-                    example: "https://youraccount.blob.core.windows.net/container/fileId.jpg"
         '400':
-          description: Solicitud incorrecta, error al procesar la imagen o imagen no proporcionada.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Error: Archivo no encontrado o inválido."
-        '413':
-          description: El archivo es demasiado grande.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "El archivo es demasiado grande. Máximo 6MB."
+          description: Error en el formato o tamaño de la imagen
         '500':
-          description: Error interno del servidor al procesar la imagen.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "Error al subir la imagen."
+          description: Error interno del servidor
 
   /get-image/{fileName}:
     get:
       tags:
         - Imágenes
-      summary: Obtener imagen por nombre de archivo
-      description: |
-        Este endpoint permite obtener una URL SAS para acceder a una imagen almacenada en Azure Blob Storage, 
-        utilizando el nombre del archivo proporcionado en el parámetro de la ruta.
+      summary: Obtener imagen
+      description: Obtiene una imagen por su nombre de archivo
       parameters:
-        - in: path
-          name: fileName
+        - name: fileName
+          in: path
           required: true
-          description: Nombre del archivo de la imagen.
+          description: Nombre del archivo de imagen
           schema:
             type: string
-            example: "imagen.jpg"
       responses:
         '200':
-          description: Imagen obtenida correctamente.
+          description: URL de la imagen generada exitosamente
           content:
             application/json:
               schema:
@@ -503,40 +272,20 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: "Imagen obtenida correctamente."
                   url:
                     type: string
-                    description: URL SAS generada para acceder a la imagen.
-                    example: "https://tu-cuenta.blob.core.windows.net/tu-contenedor/imagen.jpg?st=2021-09-01T00%3A00%3A00Z&se=2021-09-01T01%3A00%3A00Z&sp=r&sv=2020-08-04&sr=b&sig=abcdefg"
-        '400':
-          description: Solicitud incorrecta. El nombre de la imagen es requerido.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "El nombre de la imagen es requerido."
+        '404':
+          description: Imagen no encontrada
         '500':
-          description: Error interno del servidor al obtener la imagen.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "No se pudo obtener la imagen."
+          description: Error interno del servidor
 
   /delete-image:
     delete:
       tags:
         - Imágenes
-      summary: Eliminar una imagen
-      description: Elimina una imagen a partir del nombre del archivo proporcionado en el cuerpo de la solicitud.
+      summary: Eliminar imagen
+      description: Elimina una imagen por su nombre de archivo
       requestBody:
-        description: Objeto JSON que contiene el nombre del archivo de la imagen a eliminar.
         required: true
         content:
           application/json:
@@ -545,33 +294,50 @@ paths:
               properties:
                 fileName:
                   type: string
-                  description: Nombre del archivo de la imagen.
-                  example: "imagen.jpg"
-              required:
-                - fileName
+                  description: Nombre del archivo a eliminar
       responses:
         '200':
-          description: La imagen se eliminó correctamente.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "La imagen 'imagen.jpg' se eliminó correctamente."
-        '400':
-          description: Solicitud incorrecta. El parámetro 'fileName' es obligatorio y debe ser una cadena válida.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: "El parámetro 'fileName' es obligatorio y debe ser una cadena válida."
+          description: Imagen eliminada exitosamente
+        '404':
+          description: Imagen no encontrada
         '500':
-          description: Error interno al eliminar la imagen.
+          description: Error interno del servidor
+
+  /api/products:
+    get:
+      tags:
+        - Microservicio Preventa
+      summary: Obtener datos de productos para preventa
+      description: Obtiene información específica de productos para el microservicio de preventa
+      responses:
+        '200':
+          description: Datos de productos obtenidos exitosamente
+        '500':
+          description: Error interno del servidor
+
+  /api/products/actualizar-cantidad/{id_producto}/{cantidad}:
+    put:
+      tags:
+        - Microservicio Preventa
+      summary: Actualizar cantidad de producto
+      description: Actualiza la cantidad disponible de un producto
+      parameters:
+        - name: id_producto
+          in: path
+          required: true
+          description: ID del producto
+          schema:
+            type: integer
+        - name: cantidad
+          in: path
+          required: true
+          description: Nueva cantidad
+          schema:
+            type: integer
+            minimum: 0
+      responses:
+        '200':
+          description: Cantidad actualizada exitosamente
           content:
             application/json:
               schema:
@@ -579,39 +345,10 @@ paths:
                 properties:
                   message:
                     type: string
-                    example: "Error interno al eliminar la imagen."
-
-components:
-  schemas:
-    Product:
-      type: object
-      properties:
-        id_producto:
-          type: integer
-          description: Identificador único del producto.
-          example: 1
-        nombre_producto:
-          type: string
-          description: Nombre del producto.
-          example: "Camiseta Deportiva"
-        precio:
-          type: number
-          description: Precio del producto (acepta decimales).
-          example: 29.99
-        descripcion:
-          type: string
-          description: Descripción del producto.
-          example: "Camiseta de algodón para actividades deportivas."
-        cantidad_ingreso:
-          type: integer
-          description: Cantidad de producto ingresado al inventario.
-          example: 100
-        id_imagen:
-          type: string
-          description: Identificador de la imagen asociada al producto.
-          example: "img_12345"
-      required:
-        - id_producto
-        - nombre_producto
-        - precio
-        - id_imagen
+                    example: "Cantidad actualizada correctamente"
+        '400':
+          description: Cantidad inválida
+        '404':
+          description: Producto no encontrado
+        '500':
+          description: Error interno del servidor
