@@ -303,7 +303,7 @@ paths:
         '500':
           description: Error interno del servidor
 
-  /products:
+  /api/products:
     get:
       tags:
         - Ruta para peticiones del microservicio preventa
