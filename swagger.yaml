@@ -303,17 +303,73 @@ paths:
         '500':
           description: Error interno del servidor
 
-  /api/products:
+  /products:
     get:
       tags:
-        - Microservicio Preventa
-      summary: Obtener datos de productos para preventa
-      description: Obtiene información específica de productos para el microservicio de preventa
+        - Ruta para peticiones del microservicio preventa
+      summary: Obtener productos por IDs
+      description: Devuelve información de los productos con los IDs proporcionados en la query.
+      parameters:
+        - name: ids
+          in: query
+          description: Lista de IDs de productos separados por comas.
+          required: true
+          schema:
+            type: string
+            example: "1,2,3"
       responses:
-        '200':
-          description: Datos de productos obtenidos exitosamente
-        '500':
-          description: Error interno del servidor
+        "200":
+          description: Lista de productos encontrados.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id_producto:
+                      type: integer
+                      example: 1
+                    nombre_producto:
+                      type: string
+                      example: "Laptop Dell Inspiron"
+                    precio:
+                      type: number
+                      format: float
+                      example: 1200.50
+        "400":
+          description: Parámetro `ids` inválido o faltante.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "IDs must be a string"
+        "404":
+          description: No se encontraron productos con los IDs proporcionados.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "No products found for the provided IDs"
+        "500":
+          description: Error interno del servidor.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error"
+                  details:
+                    type: string
+                    example: "Error message details"
 
   /api/products/actualizar-cantidad/{id_producto}/{cantidad}:
     put:
