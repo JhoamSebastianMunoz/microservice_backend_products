@@ -9,7 +9,7 @@ let get_product = async (req: Request, res: Response) => {
     try {
         const { id_producto } = req.params;
         const result = await ProductService.getProduct(new GetProduct (id_producto));
-        if(!result) {
+        if(result.length === 0) {
             return res.status(404).json({message: 'Producto no encontrado'})
         }else{
             return res.status(200).json(result);
