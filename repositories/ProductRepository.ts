@@ -20,7 +20,7 @@ class ProductRepository {
         const sql = 'SELECT * FROM productos WHERE id_producto= ?';
         const values = [getProduct.id_producto]; 
         const [rows] = await db.execute(sql, values);      
-        return [rows]
+        return rows as GetProduct[];
     }
     static async delete(deleteProduct : DeleteProduct){
         const sql = 'DELETE FROM productos WHERE id_producto = ?';
@@ -34,7 +34,8 @@ class ProductRepository {
             updateProduct.descripcion, updateProduct.cantidad_ingreso,
             updateProduct.id_imagen,updateProduct.id_producto
         ]
-        return db.execute(sql,values);
+        const result: any = await db.execute(sql,values);
+        return result.affectedRows;
     }
 };
 
