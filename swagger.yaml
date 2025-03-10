@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://localhost:10102
+  - url: http://localhost:10104
     description: Servidor local
   - url: https://backendproducts-eefufaaeaahzauee.eastus-01.azurewebsites.net
     description: Servidor de producción
@@ -39,6 +39,30 @@ components:
         id_imagen:
           type: string
           description: ID de la imagen del producto
+        id_categoria:
+          type: numbre
+          description: ID de la categoria del producto
+
+    Categoria:
+      type: object
+      properties:
+        id_categoria:
+          type: integer
+          description: ID único de la categoría
+          example: 1
+        nombre_categoria:
+          type: string
+          description: Nombre de la categoría
+          example: "Cárnicos"
+        descripcion:
+          type: string
+          description: Descripción detallada de la categoría
+          example: "Productos de origen animal"
+        fecha_creacion:
+          type: string
+          format: date-time
+          description: Fecha y hora de creación de la categoría
+          example: "2025-03-10T15:30:00Z"
     
     Error:
       type: object
@@ -408,3 +432,479 @@ paths:
           description: Producto no encontrado
         '500':
           description: Error interno del servidor
+
+
+  /register-stock/{id_producto}:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Inventario
+      summary: Registrar ingreso de stock
+      description: Registra un nuevo ingreso de stock para un producto específico
+      parameters:
+        - name: id_producto
+          in: path
+          required: true
+          description: ID del producto al que se le registrará el stock
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - cantidad_ingresada
+                - codigo_factura
+                - costo_total
+                - costo_unitario
+                - porcentaje_venta
+              properties:
+                cantidad_ingresada:
+                  type: integer
+                  description: Cantidad de unidades ingresadas
+                  minimum: 1
+                fecha_vencimiento:
+                  type: string
+                  format: date
+                  description: Fecha de vencimiento del producto (opcional)
+                codigo_factura:
+                  type: string
+                  description: Código o número de factura
+                costo_total:
+                  type: number
+                  format: double
+                  description: Costo total del ingreso
+                costo_unitario:
+                  type: number
+                  format: double
+                  description: Costo unitario del producto
+                porcentaje_venta:
+                  type: number
+                  format: double
+                  description: Porcentaje de margen de venta
+      responses:
+        '201':
+          description: Stock registrado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Stock registrado con éxito"
+        '400':
+          description: Datos faltantes o inválidos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Faltan datos requeridos"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /get-hitoricalStock:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Inventario
+      summary: Obtener historial de ingresos de stock
+      description: Retorna el historial completo de todos los ingresos de stock
+      responses:
+        '200':
+          description: Historial de stock obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id_registro:
+                      type: integer
+                      example: 1
+                    id_producto:
+                      type: integer
+                      example: 3
+                    nombre_producto:
+                      type: string
+                      example: "Chorizo Santarrosano"
+                    cantidad_ingresada:
+                      type: integer
+                      example: 50
+                    id_usuario:
+                      type: integer
+                      example: 1
+                    nombre_usuario:
+                      type: string
+                      example: "Admin Sistema"
+                    fecha_ingreso:
+                      type: string
+                      format: date-time
+                      example: "2025-03-07T15:30:00Z"
+                    fecha_vencimiento:
+                      type: string
+                      format: date
+                      example: "2025-06-15"
+                    codigo_factura:
+                      type: string
+                      example: "FAC-2025-001"
+                    costo_total:
+                      type: number
+                      format: double
+                      example: 250000.00
+                    costo_unitario:
+                      type: number
+                      format: double
+                      example: 5000.00
+                    porcentaje_venta:
+                      type: number
+                      format: double
+                      example: 20.00
+        '404':
+          description: No se encontraron registros
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "No hay registros de stock"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /get-detailsStock/{id_registro}:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Inventario
+      summary: Obtener detalle de un ingreso de stock
+      description: Retorna los detalles completos de un ingreso de stock específico
+      parameters:
+        - name: id_registro
+          in: path
+          required: true
+          description: ID del registro de stock a consultar
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Detalle de ingreso obtenido exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id_registro:
+                    type: integer
+                    example: 1
+                  id_producto:
+                    type: integer
+                    example: 3
+                  nombre_producto:
+                    type: string
+                    example: "Chorizo Santarrosano"
+                  cantidad_ingresada:
+                    type: integer
+                    example: 50
+                  id_usuario:
+                    type: integer
+                    example: 1
+                  nombre_usuario:
+                    type: string
+                    example: "Admin Sistema"
+                  fecha_ingreso:
+                    type: string
+                    format: date-time
+                    example: "2025-03-07T15:30:00Z"
+                  fecha_vencimiento:
+                    type: string
+                    format: date
+                    example: "2025-06-15"
+                  codigo_factura:
+                    type: string
+                    example: "FAC-2025-001"
+                  costo_total:
+                    type: number
+                    format: double
+                    example: 250000.00
+                  costo_unitario:
+                    type: number
+                    format: double
+                    example: 5000.00
+                  porcentaje_venta:
+                    type: number
+                    format: double
+                    example: 20.00
+                  precio_calculado:
+                    type: number
+                    format: double
+                    example: 6000.00
+        '400':
+          description: ID de registro inválido
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "El id_registro debe ser un número válido"
+        '404':
+          description: Registro no encontrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "No se encontró el registro solicitado"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /register-category:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Categorías
+      summary: Registrar una nueva categoría
+      description: Crea una nueva categoría de productos en el sistema
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - nombre_categoria
+              properties:
+                nombre_categoria:
+                  type: string
+                  minLength: 2
+                  maxLength: 100
+                  description: Nombre de la categoría
+                descripcion:
+                  type: string
+                  maxLength: 255
+                  description: Descripción de la categoría (opcional)
+      responses:
+        '201':
+          description: Categoría registrada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "Categoria registrado con éxito"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /getAll-category:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Categorías
+      summary: Obtener todas las categorías
+      description: Retorna la lista de todas las categorías de productos
+      responses:
+        '200':
+          description: Lista de categorías obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Categoria'
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /getById-category/{id_categoria}:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Categorías
+      summary: Obtener una categoría específica
+      description: Retorna una categoría por su ID
+      parameters:
+        - name: id_categoria
+          in: path
+          required: true
+          description: ID de la categoría a buscar
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Categoría encontrada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categoria'
+        '404':
+          description: Categoría no encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Categoria no encontrada"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /update-category/{id_categoria}:
+    put:
+      security:
+        - bearerAuth: []
+      tags:
+        - Categorías
+      summary: Actualizar una categoría
+      description: Actualiza la información de una categoría existente
+      parameters:
+        - name: id_categoria
+          in: path
+          required: true
+          description: ID de la categoría a actualizar
+          schema:
+            type: integer
+            minimum: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - nombre_categoria
+              properties:
+                nombre_categoria:
+                  type: string
+                  minLength: 2
+                  maxLength: 100
+                  description: Nuevo nombre de la categoría
+                descripcion:
+                  type: string
+                  maxLength: 255
+                  description: Nueva descripción de la categoría (opcional)
+      responses:
+        '200':
+          description: Categoría actualizada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "Ok, Categoria actualizado con éxito."
+        '404':
+          description: Categoría no encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Categoria no encontrada."
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /delete_category/{id_categoria}:
+    delete:
+      security:
+        - bearerAuth: []
+      tags:
+        - Categorías
+      summary: Eliminar una categoría
+      description: Elimina una categoría por su ID
+      parameters:
+        - name: id_categoria
+          in: path
+          required: true
+          description: ID de la categoría a eliminar
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: Categoría eliminada exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Categoria eliminada con éxito."
+        '404':
+          description: Categoría no encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Categoria no encontrada."
+        '409':
+          description: No se puede eliminar debido a referencias existentes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "No se puede eliminar la Categoria debido a referencias existentes en otros registros."
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'

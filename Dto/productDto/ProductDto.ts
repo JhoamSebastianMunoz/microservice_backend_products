@@ -5,16 +5,18 @@ class Product {
     private _descripcion: string;
     private _cantidad_ingreso: number;
     private _id_imagen: string;
+    private _id_categoria: number | null;
 
     constructor(
-        nombre_producto: string, precio: number,
-        descripcion: string, cantidad_ingreso: number, id_imagen: string
+        nombre_producto: string, precio: number, descripcion: string, 
+        cantidad_ingreso: number, id_imagen: string, id_categoria: number | null = null
     ) {
         this._nombre_producto = nombre_producto;
         this._precio = precio;
         this._descripcion = descripcion;
         this._cantidad_ingreso = cantidad_ingreso;
         this._id_imagen = id_imagen;
+        this._id_categoria = id_categoria;
         }
         
     // Getters
@@ -33,6 +35,9 @@ class Product {
     get id_imagen():string {
         return this._id_imagen;
     }
+    get id_categoria():number | null{
+        return this._id_categoria;
+    }
     // Setters
     set nombre_producto(nombre_producto: string) {
         this._nombre_producto = nombre_producto;
@@ -48,6 +53,9 @@ class Product {
     }
     set id_imagen(id_imagen: string) {
         this._id_imagen = id_imagen;
+    }
+    set id_categoria(id_categoria: number | null){
+        this._id_categoria = id_categoria;
     }
 };
 

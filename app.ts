@@ -9,13 +9,21 @@ import get_products from './routes/productRoutes/get_products';
 import get_product from './routes/productRoutes/get_product';
 import delete_product from './routes/productRoutes/delete_product';
 import update_product from './routes/productRoutes/update_product';
+import register_stock from './routes/productRoutes/registre_stock';
+import get_historicalStock from './routes/productRoutes/get__historicalStock';
+import get_detailsStock from './routes/productRoutes/get_detailsStock';
+import register_category from './routes/categoryRouter/register_category';
+import getAll_category from './routes/categoryRouter/getAll_category';
+import getById_category from './routes/categoryRouter/getById_category';
+import update_category from './routes/categoryRouter/update_category';
+import delete_category from './routes/categoryRouter/delete_category';
 
 import  uploadImage from './routes/imageRoutes/upload_image_product';
 import  getImage from './routes/imageRoutes/get_image';
 import deleteImage from './routes/imageRoutes/delete_image';
 
 import get_dataProduct from './routes/microservicePresaleRoutes/get_DataProduct';
-import update_quantity from './routes/microservicePresaleRoutes/update_Quantity'
+import update_quantity from './routes/microservicePresaleRoutes/update_Quantity';
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -38,6 +46,16 @@ app.use('/get-products', get_products);
 app.use('/get-product', get_product);
 app.use('/delete-product', delete_product);
 app.use('/update-product', update_product);
+app.use('/register-stock', register_stock);
+// Sentencia CRUD para stock
+app.use('/get-hitoricalStock', get_historicalStock);
+app.use('/get-detailsStock', get_detailsStock);
+// Sentencia CRUD para categorias
+app.use('/register-category', register_category);
+app.use('/getAll-category', getAll_category);
+app.use('/getById-category', getById_category);
+app.use('/update-category', update_category);
+app.use('/delete_category', delete_category);
 
 // rutas para las imagenes usando el servicio de Azure
 app.use('/upload-image', uploadImage);
