@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: API de Productos TATSost
+  title: API de Productos TATSoft
   description: API para la gestión de productos y sus imágenes
   version: 1.0.0
 
