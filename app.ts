@@ -38,7 +38,25 @@ app.get('/', (req, res) => {
 // Montar la documentación Swagger en la ruta `/api-docs`
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:10102',
+  'http://localhost:5173',  // Frontend en desarrollo
+  'https://ambitious-sky-070d67b0f.4.azurestaticapps.net',  // Frontend deployado
+  'https://backendproducts-eefufaaeaahzauee.eastus-01.azurewebsites.net'
+];
+const corsOptions = {
+  origin: function (origin: any, callback: any) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept'],
+  credentials: true
+};
+app.use(cors(corsOptions));
 
 // Sentencia CRUD para productos
 app.use('/register-product', register_product);
