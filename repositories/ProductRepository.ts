@@ -46,7 +46,7 @@ class ProductRepository {
     return result.affectedRows; // Devuelve el número de filas afectadas.
     }
     static async update(updateProduct : UpdateProduct){
-        const sql = 'UPDATE productos SET nombre_producto = ?, precio = ?, descripcion = ?, cantidad_ingreso = ?, id_imagen = ? WHERE id_producto = ?';
+        const sql = 'UPDATE productos SET nombre_producto = ?, precio = ?, descripcion = ?, id_categoria = ?, id_imagen = ? WHERE id_producto = ?';
         const values = [updateProduct.nombre_producto, updateProduct.precio, 
             updateProduct.descripcion, updateProduct.cantidad_ingreso,
             updateProduct.id_imagen,updateProduct.id_producto

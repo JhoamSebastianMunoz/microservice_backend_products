@@ -73,7 +73,6 @@ components:
         details:
           type: string
           description: Detalles adicionales del error
-
 paths:
   /register-product:
     post:
@@ -222,7 +221,29 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Product'
+              type: object
+              properties:
+                nombre_producto:
+                  type: string
+                  description: Nombre del producto
+                  example: "Laptop Gamer"
+                precio:
+                  type: number
+                  format: float
+                  description: Precio del producto
+                  example: 2500.00
+                descripcion:
+                  type: string
+                  description: Descripción detallada del producto
+                  example: "Laptop de alto rendimiento para videojuegos"
+                id_categoria:
+                  type: integer
+                  description: ID de la categoría a la que pertenece el producto
+                  example: 3
+                id_imagen:
+                  type: integer
+                  description: ID de la imagen asociada al producto
+                  example: 7
       responses:
         '200':
           description: Producto actualizado exitosamente
@@ -908,3 +929,80 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+  /estadisticasStockBajo:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Reportes
+      summary: Obtener productos con stock bajo
+      description: Retorna la lista de productos cuya cantidad en inventario está por debajo del umbral especificado
+      parameters:
+        - name: umbral
+          in: query
+          required: false
+          description: Cantidad mínima para considerar un producto con stock bajo (por defecto 15)
+          schema:
+            type: integer
+            minimum: 1
+            default: 15
+          example: 10
+      responses:
+        '200':
+          description: Lista de productos con stock bajo obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id_producto:
+                      type: integer
+                      description: ID del producto
+                      example: 3
+                    nombre_producto:
+                      type: string
+                      description: Nombre del producto
+                      example: "Queso Mozzarella"
+                    cantidad_ingreso:
+                      type: integer
+                      description: Cantidad actual en inventario
+                      example: 8
+                    precio:
+                      type: number
+                      format: float
+                      description: Precio del producto
+                      example: 12500.00
+                    id_categoria:
+                      type: integer
+                      description: ID de la categoría
+                      example: 2
+                    nombre_categoria:
+                      type: string
+                      description: Nombre de la categoría
+                      example: "Lácteos"
+        '404':
+          description: No se encontraron productos con stock bajo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "No hay productos con stock menor a 15"
+        '500':
+          description: Error interno del servidor
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error interno del servidor"
+                  details:
+                    type: string
+                    example: "Error al consultar la base de datos"

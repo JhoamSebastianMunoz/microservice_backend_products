@@ -9,11 +9,11 @@ let update_product = async(req:Request, res:Response)=>{
             nombre_producto,
             precio,
             descripcion,
-            cantidad_ingreso,
+            id_categoria,
             id_imagen
             } = req.body;
         
-            const result = await ProductService.updateProduct(new UpdateProduct(nombre_producto, precio, descripcion, cantidad_ingreso, id_imagen, id_producto));
+            const result = await ProductService.updateProduct(new UpdateProduct(nombre_producto, precio, descripcion, id_categoria, id_imagen, id_producto));
             if (!result || result.affectedRows === 0) {
                 return res.status(404).json({ error: "Producto no encontrado." });
             }
