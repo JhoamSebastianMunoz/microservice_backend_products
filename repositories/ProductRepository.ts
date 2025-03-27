@@ -52,7 +52,7 @@ class ProductRepository {
             updateProduct.id_imagen,updateProduct.id_producto
         ]
         const result: any = await db.execute(sql,values);
-        return result.affectedRows;
+        return result;
     }
 };
 
