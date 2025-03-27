@@ -25,6 +25,8 @@ import deleteImage from './routes/imageRoutes/delete_image';
 import get_dataProduct from './routes/microservicePresaleRoutes/get_DataProduct';
 import update_quantity from './routes/microservicePresaleRoutes/update_Quantity';
 
+import get_productsLowStock from './routes/reportsRouter/getProductsLowStock';
+
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -66,6 +68,8 @@ app.use('/delete-image', deleteImage);
 app.use('/api', get_dataProduct);
 // Para actualizar la cantidad de productos
 app.use('/api', update_quantity);
+
+app.use('/estadisticasStockBajo', get_productsLowStock);
 
 
 // Configuración del puerto por donde correrá la aplicación
