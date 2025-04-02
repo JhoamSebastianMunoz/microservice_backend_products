@@ -16,7 +16,7 @@ class StockService{
         }
     
         // Consultar microservicio de usuarios para validar el usuario y su rol
-        const response = await axios.get(`${process.env.USUARIO_SERVICE_URL}${id_usuario}`);
+        const response = await axios.get(`${process.env.USUARIOS_SERVICE_URL}${id_usuario}`);
         const usuario = response.data;
         console.log('USER: ', usuario);
         
