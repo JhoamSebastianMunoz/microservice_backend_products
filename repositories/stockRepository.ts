@@ -31,7 +31,7 @@ class StockRepository{
     
     static async getStockHistory(){
         const [historial] = await db.query(`
-            SELECT rs.fecha_ingreso, rs.id_producto, p.nombre_producto, 
+            SELECT rs.id_registro, rs.fecha_ingreso, rs.id_producto, p.nombre_producto, 
                    rs.cantidad_ingresada, rs.id_usuario
             FROM registro_stock rs
             JOIN productos p ON rs.id_producto = p.id_producto

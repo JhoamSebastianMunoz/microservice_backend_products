@@ -18,7 +18,6 @@ class StockService{
         // Consultar microservicio de usuarios para validar el usuario y su rol
         const response = await axios.get(`${process.env.USUARIOS_SERVICE_URL}${id_usuario}`);
         const usuario = response.data;
-        console.log('USER: ', usuario);
         
     
         if (!usuario) {
@@ -46,7 +45,6 @@ class StockService{
             usuariosIds.map(async (id) => {
                 try {
                     const response = await axios.get(`${process.env.USUARIOS_SERVICE_URL}${id}`);
-                    console.log('USERSROCK:  ', response);
                     
                     return { id_usuario: id, nombre_completo: response.data.nombreCompleto };
                 } catch (error) {
@@ -61,6 +59,7 @@ class StockService{
     
         // Formatear la respuesta final
         return historial.map((item: any) => ({
+            id_registro: item.id_registro,
             fecha_ingreso: item.fecha_ingreso,
             id_producto: item.id_producto,
             nombre_producto: item.nombre_producto,
