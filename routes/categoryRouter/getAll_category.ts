@@ -5,7 +5,7 @@ import getAll_category from '../../controllers/categoryController/getAll-categor
 
 const router = express.Router();
 
-router.get('/', verifyToken, checkRoleAndPermission(["ADMINISTRADOR"]), getAll_category);
+router.get('/', verifyToken, checkRoleAndPermission(["ADMINISTRADOR","COLABORADOR"]), getAll_category);
 
 
 export default router;
