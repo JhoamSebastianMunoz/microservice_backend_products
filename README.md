@@ -36,7 +36,7 @@ Un microservicio backend robusto y escalable construido con **Express**, **TypeS
 
 ---
 
-## 🔧 Requisitos Previos
+## Requisitos Previos
 
 Antes de comenzar, asegúrate de tener instalados:
 
@@ -48,7 +48,7 @@ Antes de comenzar, asegúrate de tener instalados:
 
 ---
 
-## 📥 Instalación
+## Instalación
 
 ### 1. Clonar el repositorio
 
