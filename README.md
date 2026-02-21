@@ -93,7 +93,7 @@ bash
 # Importa el archivo SQL de tu base de datos
 mysql -h localhost -u tu_usuario -p tu_base_datos < database/schema.sql
 
-⚙️## Configuración
+## Configuración
 Variables de Entorno
 Variable	Descripción	Obligatoria
 DB_HOST	Host del servidor MySQL	Sí
@@ -107,7 +107,7 @@ AZURE_STORAGE_CONNECTION_STRING	Conexión a Azure Storage	No
 Base de Datos
 Este proyecto utiliza MySQL. La estructura de tablas se define en los scripts SQL ubicados en la carpeta database/.
 
-🚀## Uso
+## Uso
 Modo de Desarrollo
 Terminal 1 - Compilar TypeScript en modo observador:
 
@@ -128,7 +128,7 @@ bash
 npm run build
 npm start
 
-📁## Estructura del Proyecto
+## Estructura del Proyecto
 Code
 microservice_backend_products/
 ├── src/
@@ -164,7 +164,7 @@ microservice_backend_products/
 ├── README.md                  # Este archivo
 └── .gitignore
 
-🔌## Endpoints Disponibles
+## Endpoints Disponibles
 Autenticación
 Método	Endpoint	Descripción	Auth
 POST	/api/auth/register	Registrar nuevo usuario	No
@@ -194,7 +194,7 @@ curl -X POST http://localhost:3000/api/products \
     "stock": 10
   }'
 
-📚## Documentación API
+## Documentación API
 Este proyecto incluye Swagger UI para documentación interactiva.
 
 Accede a la documentación en:
@@ -207,7 +207,7 @@ Ver todos los endpoints disponibles
 Probar los endpoints directamente desde el navegador
 Ver los esquemas de request/response
 
-🔐## Seguridad
+## Seguridad
 Medidas de Seguridad Implementadas
 Autenticación JWT
 
@@ -236,7 +236,7 @@ Mejores Prácticas Recomendadas
 ✅ Validar permisos en cada operación crítica
 ✅ Usar variables de entorno para todas las configuraciones sensibles
 
-🛠️## Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 Backend Framework
 Express.js ^4.19.2 - Framework web minimalista
@@ -275,7 +275,7 @@ npm start
 # Ejecutar tests (si están configurados)
 npm test
 
-🤝## Contribuciones
+## Contribuciones
 Las contribuciones son bienvenidas. Para cambios importantes:
 
 Fork el repositorio
@@ -284,7 +284,7 @@ Commit tus cambios (git commit -m 'Add some AmazingFeature')
 Push a la rama (git push origin feature/AmazingFeature)
 Abre un Pull Request
 
-📄## Licencia
+## Licencia
 Este proyecto está bajo la licencia ISC. Ver el archivo package.json para más detalles.
 
 📧 Contacto
