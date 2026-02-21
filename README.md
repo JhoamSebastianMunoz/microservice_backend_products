@@ -126,7 +126,7 @@ mysql -h localhost -u tu_usuario -p tu_base_datos < database/schema.sql
 ## Configuración
 
 ### Variables de Entorno
-
+```
   Variable                          Descripción        Obligatoria
   --------------------------------- ------------------ -------------
   DB_HOST                           Host MySQL         Sí
@@ -137,7 +137,7 @@ mysql -h localhost -u tu_usuario -p tu_base_datos < database/schema.sql
   PORT                              Puerto servidor    No (3000)
   JWT_SECRET                        Clave JWT          Sí
   AZURE_STORAGE_CONNECTION_STRING   Azure Storage      No
-
+```
 ------------------------------------------------------------------------
 
 ## Uso
@@ -153,9 +153,9 @@ npm start
 ```
 
 Servidor disponible en:
-
+``` bash
 http://localhost:3000
-
+```
 ### Modo Producción
 
 ``` bash
@@ -167,7 +167,7 @@ npm start
 
 ## Estructura del Proyecto
 
-``` bash
+```
 microservice_backend_products/
 ├── src/
 │   ├── app.ts
@@ -194,15 +194,15 @@ microservice_backend_products/
 ## Endpoints Disponibles
 
 ### Autenticación
-
+```
   Método   Endpoint             Descripción         Auth
   -------- -------------------- ------------------- ------
   POST     /api/auth/register   Registrar usuario   No
   POST     /api/auth/login      Iniciar sesión      No
   POST     /api/auth/refresh    Refrescar token     Sí
-
+```
 ### Productos
-
+```
   Método   Endpoint                  Descripción           Auth
   -------- ------------------------- --------------------- ------
   GET      /api/products             Listar productos      No
@@ -211,15 +211,15 @@ microservice_backend_products/
   PUT      /api/products/:id         Actualizar producto   Sí
   DELETE   /api/products/:id         Eliminar producto     Sí
   POST     /api/products/:id/image   Subir imagen          Sí
-
+```
 ------------------------------------------------------------------------
 
 ## Documentación API
 
 Swagger UI disponible en:
-
+``` bash
 http://localhost:3000/api-docs
-
+```
 ------------------------------------------------------------------------
 
 ## Seguridad
@@ -264,11 +264,13 @@ npm test
 
 ## Contribuciones
 
-1.  Fork del repositorio\
-2.  Crear rama feature\
-3.  Commit\
-4.  Push\
-5.  Pull Request
+Si deseas contribuir al proyecto:
+
+1. Fork el repositorio
+2. Crea una rama para tu feature (`git checkout -b feature/mi-feature`)
+3. Commit tus cambios (`git commit -m 'Añade mi feature'`)
+4. Push a la rama (`git push origin feature/mi-feature`)
+5. Abre un Pull Request
 
 ------------------------------------------------------------------------
 
@@ -280,7 +282,7 @@ Licencia ISC.
 
 ## Contacto
 
-Autor: Jhoam Sebastián Muñoz\
-GitHub: https://github.com/JhoamSebastianMunoz\
-Email: jhoamsebastian68@gmail.com
+- Autor: Jhoam Sebastián Muñoz\
+- GitHub: https://github.com/JhoamSebastianMunoz\
+- Email: jhoamsebastian68@gmail.com
 
