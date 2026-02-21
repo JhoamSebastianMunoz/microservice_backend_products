@@ -55,6 +55,7 @@ Antes de comenzar, asegúrate de tener instalados:
 ```bash
 git clone https://github.com/JhoamSebastianMunoz/microservice_backend_products.git
 cd microservice_backend_products
+```
 
 2. Instalar dependencias
 bash
@@ -92,7 +93,7 @@ bash
 # Importa el archivo SQL de tu base de datos
 mysql -h localhost -u tu_usuario -p tu_base_datos < database/schema.sql
 
-## Configuración
+⚙️## Configuración
 Variables de Entorno
 Variable	Descripción	Obligatoria
 DB_HOST	Host del servidor MySQL	Sí
@@ -126,7 +127,8 @@ Modo de Producción
 bash
 npm run build
 npm start
-📁 Estructura del Proyecto
+
+📁## Estructura del Proyecto
 Code
 microservice_backend_products/
 ├── src/
@@ -161,7 +163,8 @@ microservice_backend_products/
 ├── tsconfig.json              # Configuración de TypeScript
 ├── README.md                  # Este archivo
 └── .gitignore
-🔌 Endpoints Disponibles
+
+🔌## Endpoints Disponibles
 Autenticación
 Método	Endpoint	Descripción	Auth
 POST	/api/auth/register	Registrar nuevo usuario	No
@@ -190,7 +193,8 @@ curl -X POST http://localhost:3000/api/products \
     "precio": 1200.00,
     "stock": 10
   }'
-📚 Documentación API
+
+📚## Documentación API
 Este proyecto incluye Swagger UI para documentación interactiva.
 
 Accede a la documentación en:
@@ -202,7 +206,8 @@ Aquí podrás:
 Ver todos los endpoints disponibles
 Probar los endpoints directamente desde el navegador
 Ver los esquemas de request/response
-🔐 Seguridad
+
+🔐## Seguridad
 Medidas de Seguridad Implementadas
 Autenticación JWT
 
@@ -230,12 +235,16 @@ Mejores Prácticas Recomendadas
 ✅ Implementar rate limiting en endpoints públicos
 ✅ Validar permisos en cada operación crítica
 ✅ Usar variables de entorno para todas las configuraciones sensibles
-🛠️ Tecnologías Utilizadas
+
+🛠️## Tecnologías Utilizadas
+
 Backend Framework
 Express.js ^4.19.2 - Framework web minimalista
 TypeScript ^5.4.5 - Lenguaje con tipado estático
+
 Base de Datos
 MySQL2 ^3.9.6 - Driver MySQL para Node.js
+
 Connection Pool - Para gestión eficiente de conexiones
 Autenticación & Seguridad
 jsonwebtoken ^9.0.2 - Implementación de JWT
@@ -265,7 +274,8 @@ npm start
 
 # Ejecutar tests (si están configurados)
 npm test
-🤝 Contribuciones
+
+🤝## Contribuciones
 Las contribuciones son bienvenidas. Para cambios importantes:
 
 Fork el repositorio
@@ -273,10 +283,11 @@ Crea una rama para tu feature (git checkout -b feature/AmazingFeature)
 Commit tus cambios (git commit -m 'Add some AmazingFeature')
 Push a la rama (git push origin feature/AmazingFeature)
 Abre un Pull Request
-📄 Licencia
+
+📄## Licencia
 Este proyecto está bajo la licencia ISC. Ver el archivo package.json para más detalles.
 
 📧 Contacto
 Autor: Jhoam Sebastián Muñoz
 GitHub: @JhoamSebastianMunoz
-Email: jhoamsbastian68@gmail.com
+Email: jhoamsebastian68@gmail.com
