@@ -21,7 +21,7 @@ Un microservicio backend robusto y escalable construido con **Express**, **TypeS
 
 ---
 
-## ✨ Características
+## Características
 
 - ✅ **API RESTful** completa para gestión de productos
 - ✅ **Autenticación JWT** para endpoints protegidos
@@ -91,7 +91,8 @@ npm run build
 bash
 # Importa el archivo SQL de tu base de datos
 mysql -h localhost -u tu_usuario -p tu_base_datos < database/schema.sql
-⚙️ Configuración
+
+## Configuración
 Variables de Entorno
 Variable	Descripción	Obligatoria
 DB_HOST	Host del servidor MySQL	Sí
@@ -105,7 +106,7 @@ AZURE_STORAGE_CONNECTION_STRING	Conexión a Azure Storage	No
 Base de Datos
 Este proyecto utiliza MySQL. La estructura de tablas se define en los scripts SQL ubicados en la carpeta database/.
 
-🚀 Uso
+🚀## Uso
 Modo de Desarrollo
 Terminal 1 - Compilar TypeScript en modo observador:
 
